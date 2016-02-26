@@ -6,12 +6,14 @@ class Context {
 
 	/**
 	 * Contains the action of Context.
+	 *
 	 * @var string $action
 	 */
 	protected $action;
 
 	/**
 	 * Contains the name of Context.
+	 *
 	 * @var string $name
 	 */
 	protected $name;
@@ -23,9 +25,10 @@ class Context {
 	 * @param string $name
 	 */
 	public function __construct( $action, $name = '' ) {
-		$this->action = (string)$action;
 
-		$name = (string)$name;
+		$this->action = (string) $action;
+
+		$name = (string) $name;
 		if ( $name === '' ) {
 			$name = $this->action . '_nonce';
 		}
@@ -36,6 +39,7 @@ class Context {
 	 * @return string $action
 	 */
 	public function get_action() {
+
 		return $this->action;
 	}
 
@@ -43,6 +47,7 @@ class Context {
 	 * @return string $name
 	 */
 	public function get_name() {
+
 		return $this->name;
 	}
 

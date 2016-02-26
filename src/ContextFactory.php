@@ -13,6 +13,7 @@ class ContextFactory {
 	 * @return Context
 	 */
 	public function create( $action, $name = '' ) {
+
 		return new Context( $action, $name );
 	}
 }
