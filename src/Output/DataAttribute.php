@@ -3,7 +3,6 @@
 namespace Inpsyde\Nonces\Output;
 
 use Inpsyde\Nonces\Context;
-use Inpsyde\Nonces\NonceFactory;
 
 /**
  * Provides access to the according HTML data attribute string for a given nonce context.
@@ -11,21 +10,6 @@ use Inpsyde\Nonces\NonceFactory;
  * @package Inpsyde\Nonces\Output
  */
 class DataAttribute {
-
-	/**
-	 * @var NonceFactory
-	 */
-	private $factory;
-
-	/**
-	 * Constructor. Sets up the properties.
-	 *
-	 * @param NonceFactory $factory Factory object.
-	 */
-	public function __construct( NonceFactory $factory ) {
-
-		$this->factory = $factory;
-	}
 
 	/**
 	 * Returns the HTML data attribute string for the given nonce context.
@@ -36,9 +20,9 @@ class DataAttribute {
 	 */
 	public function get( Context $context ) {
 
-		$nonce = $this->factory->create( $context );
+		$nonce = wp_create_nonce( $context->get_action() );
 
-		return 'data-' . esc_attr( $context->get_name() ) . '="' . esc_attr( $nonce->get() ) . '"';
+		return 'data-' . esc_attr( $context->get_name() ) . '="' . esc_attr( $nonce ) . '"';
 	}
 
 	/**

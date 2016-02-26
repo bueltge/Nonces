@@ -4,8 +4,6 @@ namespace Inpsyde\Tests\Nonces\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
-use Inpsyde\Nonces\Nonce;
-use Inpsyde\Nonces\NonceFactory;
 use Inpsyde\Nonces\Output\DataAttribute as Testee;
 use Inpsyde\Tests\Nonces\TestCase;
 use Mockery;
@@ -24,35 +22,25 @@ class DataAttributeTest extends TestCase {
 	 */
 	public function test_get() {
 
-		$nonce_value = 'nonce_value';
+		$testee = new Testee();
 
-		/** @var Nonce $nonce */
-		$nonce = Mockery::mock( 'Inpsyde\Nonces\Nonce' )
-			->shouldReceive( 'get' )
-			->andReturn( $nonce_value )
-			->getMock();
+		$nonce = 'nonce';
 
-		/** @var NonceFactory $nonce_factory */
-		$nonce_factory = Mockery::mock( 'Inpsyde\Nonces\NonceFactory' )
-			->shouldReceive( 'create' )
-			->andReturn( $nonce )
-			->getMock();
+		Monkey\Functions::when( 'wp_create_nonce' )
+			->justReturn( $nonce );
 
-		$testee = new Testee( $nonce_factory );
-
-		$nonce_name = 'nonce_name';
+		$name = 'name';
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
+			->shouldReceive( 'get_action' )
 			->shouldReceive( 'get_name' )
-			->andReturn( $nonce_name )
+			->andReturn( $name )
 			->getMock();
 
 		Monkey\Functions::when( 'esc_attr' )->returnArg();
 
-		$data_attribute = "data-$nonce_name=\"$nonce_value\"";
-
-		$this->assertSame( $data_attribute, $testee->get( $context ) );
+		$this->assertSame( "data-$name=\"$nonce\"", $testee->get( $context ) );
 	}
 
 	/**
@@ -62,35 +50,25 @@ class DataAttributeTest extends TestCase {
 	 */
 	public function test_render() {
 
-		$nonce_value = 'nonce';
+		$testee = new Testee();
 
-		/** @var Nonce $nonce */
-		$nonce = Mockery::mock( 'Inpsyde\Nonces\Nonce' )
-			->shouldReceive( 'get' )
-			->andReturn( $nonce_value )
-			->getMock();
+		$nonce = 'nonce';
 
-		/** @var NonceFactory $nonce_factory */
-		$nonce_factory = Mockery::mock( 'Inpsyde\Nonces\NonceFactory' )
-			->shouldReceive( 'create' )
-			->andReturn( $nonce )
-			->getMock();
+		Monkey\Functions::when( 'wp_create_nonce' )
+			->justReturn( $nonce );
 
-		$testee = new Testee( $nonce_factory );
-
-		$nonce_name = 'nonce_name';
+		$name = 'name';
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
+			->shouldReceive( 'get_action' )
 			->shouldReceive( 'get_name' )
-			->andReturn( $nonce_name )
+			->andReturn( $name )
 			->getMock();
 
 		Monkey\Functions::when( 'esc_attr' )->returnArg();
 
-		$data_attribute = "data-$nonce_name=\"$nonce_value\"";
-
-		$this->expectOutputString( $data_attribute );
+		$this->expectOutputString( "data-$name=\"$nonce\"" );
 
 		$testee->render( $context );
 	}
