@@ -27,8 +27,7 @@ class Context {
 	 */
 	public function __construct( $action, $name = '' ) {
 
-		$action = (string) $action;
-		$this->action = sanitize_title_with_dashes( $action );
+		$this->action = (string) $action;
 
 		$name = (string) $name;
 		if ( '' === $name ) {
