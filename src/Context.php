@@ -2,41 +2,44 @@
 
 namespace Inpsyde\Nonces;
 
+/**
+ * Context data object for a nonce.
+ *
+ * @package Inpsyde\Nonces
+ */
 class Context {
 
 	/**
-	 * Contains the action of Context.
-	 *
-	 * @var string $action
+	 * @var string
 	 */
-	protected $action;
+	private $action;
 
 	/**
-	 * Contains the name of Context.
-	 *
-	 * @var string $name
+	 * @var string
 	 */
-	protected $name;
+	private $name;
 
 	/**
-	 * Context constructor.
+	 * Constructor. Sets up the properties.
 	 *
-	 * @param string $action
-	 * @param string $name
+	 * @param string $action The action which the nonce is for.
+	 * @param string $name   The name reference for the nonce (e.g., for the individual output classes).
 	 */
 	public function __construct( $action, $name = '' ) {
 
 		$this->action = (string) $action;
 
 		$name = (string) $name;
-		if ( $name === '' ) {
+		if ( '' === $name ) {
 			$name = $this->action . '_nonce';
 		}
 		$this->name = sanitize_title_with_dashes( $name );
 	}
 
 	/**
-	 * @return string $action
+	 * Returns the nonce action.
+	 *
+	 * @return string
 	 */
 	public function get_action() {
 
@@ -44,11 +47,12 @@ class Context {
 	}
 
 	/**
-	 * @return string $name
+	 * Returns the name reference for the nonce.
+	 *
+	 * @return string
 	 */
 	public function get_name() {
 
 		return $this->name;
 	}
-
 }
