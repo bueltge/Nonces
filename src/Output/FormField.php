@@ -5,37 +5,33 @@ namespace Inpsyde\Nonces\Output;
 use Inpsyde\Nonces\Context;
 
 /**
- * FormField creator.
+ * Provides access to the according (hidden) input element for a given nonce context.
  *
- * @package Inpsyde\Nonces
+ * @package Inpsyde\Nonces\Output
  */
-
 class FormField {
 
-  /**
-   * Returns a hidden field with the nonce parameter added.
-   *
-   * @param Context $context
-   *
-   * @return string
-   */
+	/**
+	 * Returns the input element for the given nonce context.
+	 *
+	 * @param Context $context Nonce context object.
+	 *
+	 * @return string
+	 */
+	public function get( Context $context ) {
 
-   public function get ( Context $context ) {
+		return wp_nonce_field( $context->get_action(), $context->get_name(), false, false );
+	}
 
-     return wp_nonce_field( $context->get_action(), $context->get_name(), false, false );
-   }
+	/**
+	 * Renders the input element for the given nonce context.
+	 *
+	 * @param Context $context Nonce context object.
+	 *
+	 * @return void
+	 */
+	public function render( Context $context ) {
 
-   /**
-    * Prints a hidden field with the nonce parameter added.
-    *
-    * @param Context $context
-    *
-    * @return string
-    */
-
-   public function render ( Context $context ) {
-
-     echo $this->get( $context );
-   }
-
+		echo $this->get( $context );
+	}
 }
