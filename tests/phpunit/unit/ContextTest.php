@@ -21,7 +21,7 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-	public function basicTest() {
+	public function test_basic() {
 		$expected_action = 'Meine Action';
 		$expected_name = 'Mein Name';
 		$testee = new Testee( $expected_action, $expected_name );
@@ -30,7 +30,7 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals( $expected_name, $testee->get_name() );
 	}
 
-	public function emptyNameTest() {
+	public function test_emptyname() {
 		$testee = new Testee( 'Meine Action' );
 
 		$this->assertEquals( 'meine-action_nonce', $testee->get_name() );

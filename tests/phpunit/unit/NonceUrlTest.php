@@ -20,7 +20,7 @@ class NonceUrlTest extends PHPUnit_Framework_TestCase {
 		parent::tearDown();
 	}
 
-	public function basicTest() {
+	public function test_basic() {
 		$testee = new Testee();
 		Monkey\Functions::when('wp_nonce_url');
 		Monkey\Functions::expect('wp_create_nonce')->andReturn('123');
