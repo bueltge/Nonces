@@ -22,11 +22,13 @@ class FormField {
 
    public function get ( Context $context ) {
 
-     return wp_nonce_field( $context->get_action(), $context->get_name() );
+     return wp_nonce_field( $context->get_action(), $context->get_name(), false, false );
    }
 
    /**
     * Prints a hidden field with the nonce parameter added.
+    *
+    * @param Context $context
     *
     * @return string
     */
