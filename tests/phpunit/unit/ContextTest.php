@@ -14,7 +14,7 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 	 * @param $input_name
 	 * @param $expected_name
 	 *
-	 * @dataProvider testBasicDataProvider
+	 * @dataProvider basic_dataprovider
 	 */
 	public function test_basic( $input_action, $expected_action, $input_name, $expected_name ) {
 
