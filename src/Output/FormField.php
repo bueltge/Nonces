@@ -2,6 +2,8 @@
 
 namespace Inpsyde\Nonces\Output;
 
+use Inpsyde\Nonces\Context;
+
 /**
  * FormField creator.
  *
