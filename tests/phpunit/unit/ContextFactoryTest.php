@@ -4,23 +4,24 @@ namespace Inpsyde\Tests\Nonces;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\ContextFactory as Testee;
-use PHPUnit_Framework_TestCase;
 
-class ContextFactoryTest extends PHPUnit_Framework_TestCase {
+/**
+ * Test for the context factory.
+ *
+ * @package Inpsyde\Test\Nonces
+ */
+class ContextFactoryTest extends TestCase\MonkeyTestCase {
 
-	protected function setUp() {
+	/**
+	 * Test for the create() method.
+	 *
+	 * @return void
+	 */
+	public function test_create() {
+
 		Monkey\Functions::when( 'sanitize_title_with_dashes' );
-	}
-
-	public function test_create_basic() {
 
 		$testee = new Testee();
-		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'Meine Action', 'Mein Name' ) );
-	}
-
-	public function test_create_with_empty_name() {
-
-		$testee = new Testee();
-		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'Meine Action' ) );
+		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'action' ) );
 	}
 }

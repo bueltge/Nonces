@@ -4,42 +4,73 @@ namespace Inpsyde\Tests\Nonces;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context as Testee;
-use PHPUnit_Framework_TestCase;
 
-class ContextTest extends PHPUnit_Framework_TestCase {
+/**
+ * Tests for the Context class.
+ *
+ * @package Inpsyde\Tests\Nonces
+ */
+class ContextTest extends TestCase\MonkeyTestCase {
 
 	/**
-	 * @param $input_action
-	 * @param $expected_action
-	 * @param $input_name
-	 * @param $expected_name
+	 * Test for the get_action() method.
 	 *
-	 * @dataProvider basic_dataprovider
+	 * @return void
 	 */
-	public function test_basic( $input_action, $expected_action, $input_name, $expected_name ) {
+	public function test_get_action() {
 
-		Monkey\Functions::when( '\sanitize_title_with_dashes' );
+		Monkey\Functions::when( 'sanitize_title_with_dashes' );
 
-		$testee = new Testee( $input_action, $input_name );
+		$action = 'action';
 
-		$this->assertSame( $expected_action, $testee->get_action() );
-		$this->assertSame( $expected_name, $testee->get_name() );
+		$testee = new Testee( $action );
+
+		$this->assertSame( $action, $testee->get_action() );
 	}
 
 	/**
-	 * Returns the test-data for test_basic() in following format:
+	 * Test for the get_name() method.
 	 *
-	 *      - input action
-	 *      - expected action result
-	 *      - input name
-	 *      - expected name result
+	 * @dataProvider provide_get_name_data
+	 *
+	 * @param string $expected
+	 * @param string $action
+	 * @param string $name
+	 *
+	 * @return void
 	 */
-	public function basic_dataprovider() {
+	public function test_get_name( $expected, $action, $name ) {
 
-		return array(
-			array( 'Meine Action', 'meine-action', 'Mein Name', 'mein-name' ),
-			array( 'Meine Action', 'meine-action', '', 'meine-action_nonce' ),
-		);
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
+		$testee = new Testee( $action, $name );
+
+		$this->assertSame( $expected, $testee->get_name() );
 	}
 
+	/**
+	 * Data provider for the test_get_name() method.
+	 *
+	 * @return array[]
+	 */
+	public function provide_get_name_data() {
+
+		$action = 'action';
+
+		$name = 'name';
+
+		return [
+			'with_name'    => [
+				'expected' => $name,
+				'action'   => $action,
+				'name'     => $name,
+			],
+			'without_name' => [
+				'expected' => $action . '_nonce',
+				'action'   => $action,
+				'name'     => '',
+			],
+		];
+	}
 }

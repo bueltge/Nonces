@@ -12,6 +12,10 @@ class FormFieldTest extends PHPUnit_Framework_TestCase {
 
 	public function test_render() {
 
+    $testee = new Testee();
+
+    Monkey\Functions::expect( 'wp_nonce_field' )
+    ->andReturn( $some_markup );
 
 	}
 }
