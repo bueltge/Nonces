@@ -24,7 +24,7 @@ class NonceUrlTest extends PHPUnit_Framework_TestCase {
 		                  ->andReturn( 'nonce' )
 		                  ->getMock();
 
-		$this->assertEquals(
+		$this->assertSame(
 			'http://inpsyde.com/?nonce=123',
 			$testee->add_query_arg( 'http://inpsyde.com', $context )
 		);

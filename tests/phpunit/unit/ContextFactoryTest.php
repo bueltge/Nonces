@@ -10,7 +10,7 @@ class ContextFactoryTest extends PHPUnit_Framework_TestCase {
 
 	public function test_basiccreate() {
 
-		Monkey\Functions::when( '\sanitize_title_with_dashes' );
+		Monkey\Functions::when( 'sanitize_title_with_dashes' );
 
 		$testee = new Testee();
 

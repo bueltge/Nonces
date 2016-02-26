@@ -10,7 +10,7 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		Monkey\Functions::when( '\sanitize_title_with_dashes' );
+		Monkey\Functions::when( 'sanitize_title_with_dashes' );
 	}
 
 	public function test_basic() {
@@ -20,14 +20,14 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 
 		$testee = new Testee( $expected_action, $expected_name );
 
-		$this->assertEquals( $expected_action, $testee->get_action() );
-		$this->assertEquals( $expected_name, $testee->get_name() );
+		$this->assertSame( $expected_action, $testee->get_action() );
+		$this->assertSame( $expected_name, $testee->get_name() );
 	}
 
 	public function test_emptyname() {
 
 		$testee = new Testee( 'Meine Action' );
 
-		$this->assertEquals( 'meine-action_nonce', $testee->get_name() );
+		$this->assertSame( 'meine-action_nonce', $testee->get_name() );
 	}
 }
