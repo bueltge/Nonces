@@ -8,13 +8,20 @@ use PHPUnit_Framework_TestCase;
 
 class ContextFactoryTest extends PHPUnit_Framework_TestCase {
 
-	public function test_basiccreate() {
+	protected function tearUp() {
 
 		Monkey\Functions::when( 'sanitize_title_with_dashes' );
+	}
+
+	public function test_create_basic() {
 
 		$testee = new Testee();
-
-		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'Meine Action' ) );
 		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'Meine Action', 'Mein Name' ) );
+	}
+
+	public function test_create_with_empty_name() {
+
+		$testee = new Testee();
+		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'Meine Action' ) );
 	}
 }

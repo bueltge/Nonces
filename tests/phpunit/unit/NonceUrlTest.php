@@ -13,20 +13,23 @@ class NonceUrlTest extends PHPUnit_Framework_TestCase {
 
 		$testee = new Testee();
 
-		Monkey\Functions::when( 'wp_nonce_url' );
-		Monkey\Functions::expect( 'wp_create_nonce' )
-		                ->andReturn( '123' );
+		$url    = 'http://www.inpsyde.com/';
+		$action = 'my-action';
+		$name   = 'my-name';
+
+		Monkey\Functions::expect( 'wp_nonce_url' )
+		                ->andReturn( $url . $action . $name );
 
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 		                  ->shouldReceive( 'get_action' )
-		                  ->andReturn( 'Meine Action' )
+		                  ->andReturn( $action )
 		                  ->shouldReceive( 'get_name' )
-		                  ->andReturn( 'nonce' )
+		                  ->andReturn( $name )
 		                  ->getMock();
 
 		$this->assertSame(
-			'http://inpsyde.com/?nonce=123',
-			$testee->add_query_arg( 'http://inpsyde.com', $context )
+			$url . $action . $name,
+			$testee->add_query_arg( $url, $context )
 		);
 	}
 }
