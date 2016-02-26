@@ -6,7 +6,7 @@ use Brain\Monkey;
 use Inpsyde\Nonces\Nonce\Context as Testee;
 use PHPUnit_Framework_TestCase;
 
-class ContextTest extends PHPUnit_Framework_TestCase {
+class FormFieldTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
