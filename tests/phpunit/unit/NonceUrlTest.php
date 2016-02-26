@@ -3,33 +3,37 @@
 namespace Inpsyde\Tests\Nonces;
 
 use Brain\Monkey;
-use Mockery;
+use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\NonceUrl as Testee;
-use PHPUnit_Framework_TestCase;
+use Inpsyde\Tests\Nonces\TestCase;
+use Mockery;
 
-class NonceUrlTest extends PHPUnit_Framework_TestCase {
+/**
+ * Test case for the NonceUrl class.
+ *
+ * @package Inpsyde\Tests\Nonces
+ */
+class NonceUrlTest extends TestCase {
 
-	public function test_basic() {
+	/**
+	 * Test for the add_query_arg() method.
+	 *
+	 * @return void
+	 */
+	public function test_add_query_arg() {
 
 		$testee = new Testee();
 
-		$url    = 'http://www.inpsyde.com/';
-		$action = 'my-action';
-		$name   = 'my-name';
+		$nonce_url = 'nonce_url';
 
-		Monkey\Functions::expect( 'wp_nonce_url' )
-		                ->andReturn( $url . $action . $name );
+		Monkey\Functions::when( 'wp_nonce_url' )->justReturn( $nonce_url );
 
+		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-		                  ->shouldReceive( 'get_action' )
-		                  ->andReturn( $action )
-		                  ->shouldReceive( 'get_name' )
-		                  ->andReturn( $name )
-		                  ->getMock();
+			->shouldReceive( 'get_action' )
+			->shouldReceive( 'get_name' )
+			->getMock();
 
-		$this->assertSame(
-			$url . $action . $name,
-			$testee->add_query_arg( $url, $context )
-		);
+		$this->assertSame( $nonce_url, $testee->add_query_arg( 'url', $context ) );
 	}
 }

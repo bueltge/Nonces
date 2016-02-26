@@ -6,11 +6,11 @@ use Brain\Monkey;
 use Inpsyde\Nonces\Context as Testee;
 
 /**
- * Tests for the Context class.
+ * Test case for the Context class.
  *
  * @package Inpsyde\Tests\Nonces
  */
-class ContextTest extends TestCase\MonkeyTestCase {
+class ContextTest extends TestCase {
 
 	/**
 	 * Test for the get_action() method.
@@ -41,8 +41,7 @@ class ContextTest extends TestCase\MonkeyTestCase {
 	 */
 	public function test_get_name( $expected, $action, $name ) {
 
-		Monkey\Functions::when( 'sanitize_title_with_dashes' )
-			->returnArg();
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )->returnArg();
 
 		$testee = new Testee( $action, $name );
 
