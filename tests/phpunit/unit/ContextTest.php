@@ -10,20 +10,14 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		parent::setUp();
-		Monkey::setUpWP();
-		Monkey\Functions::when('sanitize_title_with_dashes');
-	}
-
-	protected function tearDown() {
-
-		Monkey::tearDownWP();
-		parent::tearDown();
+		Monkey\Functions::when( '\sanitize_title_with_dashes' );
 	}
 
 	public function test_basic() {
+
 		$expected_action = 'Meine Action';
-		$expected_name = 'Mein Name';
+		$expected_name   = 'Mein Name';
+
 		$testee = new Testee( $expected_action, $expected_name );
 
 		$this->assertEquals( $expected_action, $testee->get_action() );
@@ -31,6 +25,7 @@ class ContextTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function test_emptyname() {
+
 		$testee = new Testee( 'Meine Action' );
 
 		$this->assertEquals( 'meine-action_nonce', $testee->get_name() );
