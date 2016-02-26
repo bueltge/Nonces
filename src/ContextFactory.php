@@ -3,7 +3,7 @@
 namespace Inpsyde\Nonces;
 
 /**
- * Factory for nonce context data objects.
+ * Factory for nonce context objects.
  *
  * @package Inpsyde\Nonces
  */

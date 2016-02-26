@@ -3,7 +3,7 @@
 namespace Inpsyde\Nonces;
 
 /**
- * Context data object for a nonce.
+ * Context object for a nonce.
  *
  * @package Inpsyde\Nonces
  */
