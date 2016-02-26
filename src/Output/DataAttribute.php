@@ -35,7 +35,9 @@ class DataAttribute {
 	 * @return string
 	 */
 	public function get( Context $context ) {
-		return 'data-' . $context->get_name() . '="' . (string)$this->factory->create( $context ) . '"';
+		$name = esc_attr( $context->get_name() );
+		$nonce = $this->factory->create( $context );
+		return 'data-' . $name . '="' . esc_attr( $nonce->get() ) . '"';
 	}
 
 	/**
@@ -45,7 +47,7 @@ class DataAttribute {
 	 * @param NonceFactory $factory
 	 */
 	public function render( Context $context ) {
-		echo $this->get( $context, $this->factory );
+		echo $this->get( $context );
 	}
 
 }
