@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces\View;
+namespace Inpsyde\Nonces\Output;
 
 class FormField {
 
