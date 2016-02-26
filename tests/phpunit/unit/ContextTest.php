@@ -41,7 +41,8 @@ class ContextTest extends TestCase {
 	 */
 	public function test_get_name( $expected, $action, $name ) {
 
-		Monkey\Functions::when( 'sanitize_title_with_dashes' )->returnArg();
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
 
 		$testee = new Testee( $action, $name );
 

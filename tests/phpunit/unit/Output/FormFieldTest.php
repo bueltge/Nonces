@@ -32,7 +32,8 @@ class FormFieldTest extends TestCase {
 
 		$nonce_field = 'nonce_field';
 
-		Monkey\Functions::when( 'wp_nonce_field' )->justReturn( $nonce_field );
+		Monkey\Functions::when( 'wp_nonce_field' )
+			->justReturn( $nonce_field );
 
 		$this->assertSame( $nonce_field, $testee->get( $context ) );
 	}
@@ -54,7 +55,8 @@ class FormFieldTest extends TestCase {
 
 		$nonce_field = 'nonce_field';
 
-		Monkey\Functions::when( 'wp_nonce_field' )->justReturn( $nonce_field );
+		Monkey\Functions::when( 'wp_nonce_field' )
+			->justReturn( $nonce_field );
 
 		$this->expectOutputString( $nonce_field );
 
