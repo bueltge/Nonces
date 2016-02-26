@@ -8,8 +8,7 @@ use PHPUnit_Framework_TestCase;
 
 class ContextFactoryTest extends PHPUnit_Framework_TestCase {
 
-	protected function tearUp() {
-
+	protected function setUp() {
 		Monkey\Functions::when( 'sanitize_title_with_dashes' );
 	}
 
