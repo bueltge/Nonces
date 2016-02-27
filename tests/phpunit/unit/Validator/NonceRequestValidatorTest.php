@@ -12,7 +12,7 @@ use Inpsyde\Nonces\Validator\NonceRequestValidator as Testee;
  *
  * @package Inpsyde\Tests\Nonces
  */
-class NonceRequestValidator extends TestCase\MonkeyTestCase {
+class NonceRequestValidator extends TestCase {
 
 	/**
 	 * Testing the Exception by an invalid constructor argument.
@@ -36,16 +36,16 @@ class NonceRequestValidator extends TestCase\MonkeyTestCase {
 	 *
 	 * @param $method
 	 * @param $name
-	 * @param $action
+	 * @param $request_name
 	 * @param $nonce_return
 	 * @param $expected
 	 *
 	 * @return void
 	 */
-	public function test_post_request( $method, $name, $action, $nonce_return, $expected ) {
+	public function test_post_request( $method, $name, $request_name, $nonce_return, $expected ) {
 
 		$_SERVER[ 'REQUEST_METHOD' ] = $method;
-		$_POST[ $name ]              = 'nonce';
+		$_POST[ $request_name ]      = 'nonce';
 
 		Monkey\Functions::expect( 'wp_verify_nonce' )
 		                ->andReturn( $nonce_return );
@@ -53,7 +53,7 @@ class NonceRequestValidator extends TestCase\MonkeyTestCase {
 		/** @var \Inpsyde\Nonces\Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 		                  ->shouldReceive( 'get_action' )
-		                  ->andReturn( $action )
+		                  ->andReturn( 'action' )
 		                  ->shouldReceive( 'get_name' )
 		                  ->andReturn( $name )
 		                  ->getMock();
@@ -65,24 +65,31 @@ class NonceRequestValidator extends TestCase\MonkeyTestCase {
 	public function provide_post_data() {
 
 		return [
-			'valid_data'           => [
+			'valid_data'                   => [
 				'method'       => 'POST',
 				'name'         => 'the_name',
-				'action'       => 'the_action',
+				'request_name' => 'the_name',
 				'nonce_return' => TRUE,
 				'expected'     => TRUE
 			],
-			'invalid_nonce_value'  => [
+			'invalid_nonce_value'          => [
 				'method'       => 'POST',
 				'name'         => 'the_name',
-				'action'       => 'the_action',
+				'request_name' => 'the_name',
 				'nonce_return' => FALSE,
 				'expected'     => FALSE
 			],
-			'invalid_request_type' => [
+			'invalid_nonce_not_in_request' => [
+				'method'       => 'POST',
+				'name'         => 'the_name',
+				'request_name' => 'other_name',
+				'nonce_return' => FALSE,
+				'expected'     => FALSE
+			],
+			'invalid_request_type'         => [
 				'method'       => 'GET',
 				'name'         => 'the_name',
-				'action'       => 'the_action',
+				'request_name' => 'the_name',
 				'nonce_return' => TRUE,
 				'expected'     => FALSE
 			],
