@@ -3,6 +3,7 @@
 namespace Inpsyde\Tests\Nonces;
 
 use Brain\Monkey;
+use Inpsyde\Nonces\Exception\InvalidArgumentException;
 use Mockery;
 use Inpsyde\Nonces\Validator\NonceRequestValidator as Testee;
 
@@ -14,22 +15,40 @@ use Inpsyde\Nonces\Validator\NonceRequestValidator as Testee;
 class NonceRequestValidator extends TestCase\MonkeyTestCase {
 
 	/**
-	 * Basic test for validation a POST-Request.
+	 * Testing the Exception by an invalid constructor argument.
+	 */
+	public function test_exception() {
+
+		$this->expectException( InvalidArgumentException::class );
+
+		/** @var \Inpsyde\Nonces\Context $context */
+		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
+		                  ->shouldReceive( 'get_action' )
+		                  ->shouldReceive( 'get_name' )
+		                  ->getMock();
+		new Testee( $context, 'invalid_request_method' );
+	}
+
+	/**
+	 * Test for request validator by the given dataset.
+	 *
+	 * @dataProvider provide_post_data
+	 *
+	 * @param $method
+	 * @param $name
+	 * @param $action
+	 * @param $nonce_return
+	 * @param $expected
 	 *
 	 * @return void
 	 */
-	public function test_post_request() {
-
-		$method = 'POST';
-		$action = 'action';
-		$name   = 'name';
-		$nonce  = '123';
+	public function test_post_request( $method, $name, $action, $nonce_return, $expected ) {
 
 		$_SERVER[ 'REQUEST_METHOD' ] = $method;
-		$_POST[ $name ]              = $nonce;
+		$_POST[ $name ]              = 'nonce';
 
 		Monkey\Functions::expect( 'wp_verify_nonce' )
-		                ->andReturn( TRUE );
+		                ->andReturn( $nonce_return );
 
 		/** @var \Inpsyde\Nonces\Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
@@ -39,8 +58,34 @@ class NonceRequestValidator extends TestCase\MonkeyTestCase {
 		                  ->andReturn( $name )
 		                  ->getMock();
 
-		$testee = new Testee( $context, $method );
-		$this->assertTrue( $testee->validate() );
+		$testee = new Testee( $context, 'POST' );
+		$this->assertSame( $expected, $testee->validate() );
 	}
 
+	public function provide_post_data() {
+
+		return [
+			'valid_data'           => [
+				'method'       => 'POST',
+				'name'         => 'the_name',
+				'action'       => 'the_action',
+				'nonce_return' => TRUE,
+				'expected'     => TRUE
+			],
+			'invalid_nonce_value'  => [
+				'method'       => 'POST',
+				'name'         => 'the_name',
+				'action'       => 'the_action',
+				'nonce_return' => FALSE,
+				'expected'     => FALSE
+			],
+			'invalid_request_type' => [
+				'method'       => 'GET',
+				'name'         => 'the_name',
+				'action'       => 'the_action',
+				'nonce_return' => TRUE,
+				'expected'     => FALSE
+			],
+		];
+	}
 }

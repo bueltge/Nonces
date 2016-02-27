@@ -27,7 +27,7 @@ class NonceRequestValidator implements Validator {
 	 */
 	private $allowed_methods = [
 		'POST' => INPUT_POST,
-		'GET' => INPUT_GET
+		'GET'  => INPUT_GET
 	];
 
 	/**
@@ -64,7 +64,7 @@ class NonceRequestValidator implements Validator {
 		}
 
 		$input_type = $this->allowed_methods[ $this->method ];
-		$nonce = filter_input( $input_type, $this->context->get_name() );
+		$nonce      = filter_input( $input_type, $this->context->get_name() );
 
 		// wp_verify_nonce returns 1 or 2 on success and FALSE on failure.
 		return ! ! wp_verify_nonce( $nonce, $this->context->get_action() );

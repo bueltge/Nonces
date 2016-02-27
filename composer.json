@@ -10,10 +10,26 @@
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "Inpsyde GmbH",
-			"email": "hello@inpsyde.com",
-			"homepage": "http://inpsyde.com",
-			"role": "Company"
+			"name": "Tina Billinger",
+			"role": "Developer"
+		},
+		{
+			"name": "Christian Brückner",
+			"email": "chris@chrico.info",
+			"homepage": "https://www.chrico.info",
+			"role": "Developer"
+		},
+		{
+			"name": "Thorsten Frommen",
+			"email": "info@tfrommen.de",
+			"homepage": "http://tfrommen.de",
+			"role": "Developer"
+		},
+		{
+			"name": "Jessica Lyschik",
+			"email": "hallo@luminuu.de",
+			"homepage": "http://luminuu.de",
+			"role": "Developer"
 		}
 	],
 	"support": {
