@@ -6,11 +6,11 @@ use Brain\Monkey;
 use Inpsyde\Nonces\ContextFactory as Testee;
 
 /**
- * Test for the context factory.
+ * Test case for the ContextFactory class.
  *
  * @package Inpsyde\Test\Nonces
  */
-class ContextFactoryTest extends TestCase\MonkeyTestCase {
+class ContextFactoryTest extends TestCase {
 
 	/**
 	 * Test for the create() method.
@@ -22,6 +22,7 @@ class ContextFactoryTest extends TestCase\MonkeyTestCase {
 		Monkey\Functions::when( 'sanitize_title_with_dashes' );
 
 		$testee = new Testee();
+
 		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'action' ) );
 	}
 }

@@ -4,16 +4,16 @@ namespace Inpsyde\Tests\Nonces\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
-use Inpsyde\Nonces\Output\DataAttribute as Testee;
+use Inpsyde\Nonces\Output\NoncedUrl as Testee;
 use Inpsyde\Tests\Nonces\TestCase;
 use Mockery;
 
 /**
- * Test case for the DataAttribute class.
+ * Test case for the NoncedUrl class.
  *
  * @package Inpsyde\Tests\Nonces\Output
  */
-class DataAttributeTest extends TestCase {
+class NoncedUrlTest extends TestCase {
 
 	/**
 	 * Test for the get() method.
@@ -24,23 +24,18 @@ class DataAttributeTest extends TestCase {
 
 		$testee = new Testee();
 
-		$nonce = 'nonce';
+		$nonced_url = 'nonced_url';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce );
-
-		$name = 'name';
+		Monkey\Functions::when( 'wp_nonce_url' )
+			->justReturn( $nonced_url );
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
 			->shouldReceive( 'get_name' )
-			->andReturn( $name )
 			->getMock();
 
-		Monkey\Functions::when( 'esc_attr' )->returnArg();
-
-		$this->assertSame( "data-$name=\"$nonce\"", $testee->get( $context ) );
+		$this->assertSame( $nonced_url, $testee->get( 'url', $context ) );
 	}
 
 	/**
@@ -52,24 +47,19 @@ class DataAttributeTest extends TestCase {
 
 		$testee = new Testee();
 
-		$nonce = 'nonce';
+		$nonced_url = 'nonced_url';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce );
-
-		$name = 'name';
+		Monkey\Functions::when( 'wp_nonce_url' )
+			->justReturn( $nonced_url );
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
 			->shouldReceive( 'get_name' )
-			->andReturn( $name )
 			->getMock();
 
-		Monkey\Functions::when( 'esc_attr' )->returnArg();
+		$this->expectOutputString( $nonced_url );
 
-		$this->expectOutputString( "data-$name=\"$nonce\"" );
-
-		$testee->render( $context );
+		$testee->render( 'url', $context );
 	}
 }

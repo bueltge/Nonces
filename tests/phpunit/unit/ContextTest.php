@@ -6,11 +6,11 @@ use Brain\Monkey;
 use Inpsyde\Nonces\Context as Testee;
 
 /**
- * Tests for the Context class.
+ * Test case for the Context class.
  *
  * @package Inpsyde\Tests\Nonces
  */
-class ContextTest extends TestCase\MonkeyTestCase {
+class ContextTest extends TestCase {
 
 	/**
 	 * Test for the get_action() method.

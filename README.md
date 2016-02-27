@@ -1,11 +1,18 @@
 # Nonces
 
 ## Description
+Created for the first Inpsyde Team Challenge 25th-26th February 2016. Team 1 members are Christian Brückner, Thorsten Frommen, Tina Billinger and Jessica Lyschik.
 
 ## Features
+- Create new nonce
+- Create nonce URL
+- Create form field with nonce
+- Create data attribute containing nonce for ajax requests
+- Validate nonces
 
 ## Installation
 ### Requirements
+WordPress 4.4
 
 ### Installation
 

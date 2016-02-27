@@ -1,19 +1,18 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Test\Nonces;
+namespace Inpsyde\Tests\Nonces;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\NonceFactory as Testee;
 use Mockery;
-use PHPUnit_Framework_TestCase;
 
 /**
- * Test for the nonce factory.
+ * Test case for the NonceFactory class.
  *
  * @package Inpsyde\Test\Nonces
  */
-class NonceFactoryTest extends PHPUnit_Framework_TestCase {
+class NonceFactoryTest extends TestCase {
 
 	/**
 	 * Test for the create() method.

@@ -1,16 +1,15 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Test\Nonces;
+namespace Inpsyde\Tests\Nonces;
 
 use Inpsyde\Nonces\Nonce as Testee;
-use PHPUnit_Framework_TestCase;
 
 /**
- * Test for the nonce model.
+ * Test case for the Nonce class.
  *
  * @package Inpsyde\Test\Nonces
  */
-class NonceTest extends PHPUnit_Framework_TestCase {
+class NonceTest extends TestCase {
 
 	/**
 	 * Test for the get() method.
@@ -19,7 +18,10 @@ class NonceTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function test_get() {
 
-		$testee = new Testee( $nonce = 'nonce' );
+		$nonce = 'nonce';
+
+		$testee = new Testee( $nonce );
+
 		$this->assertSame( $nonce, $testee->get() );
 	}
 }
