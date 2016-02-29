@@ -1,15 +1,15 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces\Validator;
+namespace Inpsyde\Nonces\Tests\Unit\Validator;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Validator\ValidatorFactory as Testee;
-use Inpsyde\Tests\Nonces\TestCase;
+use Inpsyde\Nonces\Tests\Unit\TestCase;
 
 /**
  * Test case for the ValidatorFactory class.
  *
- * @package Inpsyde\Tests\Nonces\Validator
+ * @package Inpsyde\Nonces\Tests\Unit\Validator
  */
 class ValidatorFactoryTest extends TestCase {
 

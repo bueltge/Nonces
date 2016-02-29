@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces;
+namespace Inpsyde\Nonces\Tests\Unit;
 
 use Inpsyde\Nonces\Nonce as Testee;
 

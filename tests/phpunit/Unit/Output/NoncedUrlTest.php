@@ -1,19 +1,19 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces\Output;
+namespace Inpsyde\Nonces\Tests\Unit\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
-use Inpsyde\Nonces\Output\FormField as Testee;
-use Inpsyde\Tests\Nonces\TestCase;
+use Inpsyde\Nonces\Output\NoncedUrl as Testee;
+use Inpsyde\Nonces\Tests\Unit\TestCase;
 use Mockery;
 
 /**
- * Test case for the FormField class.
+ * Test case for the NoncedUrl class.
  *
- * @package Inpsyde\Tests\Nonces\Output
+ * @package Inpsyde\Nonces\Tests\Unit\Output
  */
-class FormFieldTest extends TestCase {
+class NoncedUrlTest extends TestCase {
 
 	/**
 	 * Test for the get() method.
@@ -24,18 +24,18 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
+		$nonced_url = 'nonced_url';
+
+		Monkey\Functions::when( 'wp_nonce_url' )
+			->justReturn( $nonced_url );
+
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
 			->shouldReceive( 'get_name' )
 			->getMock();
 
-		$nonce_field = 'nonce_field';
-
-		Monkey\Functions::when( 'wp_nonce_field' )
-			->justReturn( $nonce_field );
-
-		$this->assertSame( $nonce_field, $testee->get( $context ) );
+		$this->assertSame( $nonced_url, $testee->get( 'url', $context ) );
 	}
 
 	/**
@@ -47,19 +47,19 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
+		$nonced_url = 'nonced_url';
+
+		Monkey\Functions::when( 'wp_nonce_url' )
+			->justReturn( $nonced_url );
+
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
 			->shouldReceive( 'get_name' )
 			->getMock();
 
-		$nonce_field = 'nonce_field';
+		$this->expectOutputString( $nonced_url );
 
-		Monkey\Functions::when( 'wp_nonce_field' )
-			->justReturn( $nonce_field );
-
-		$this->expectOutputString( $nonce_field );
-
-		$testee->render( $context );
+		$testee->render( 'url', $context );
 	}
 }

@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces;
+namespace Inpsyde\Nonces\Tests\Unit;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context as Testee;
@@ -8,7 +8,7 @@ use Inpsyde\Nonces\Context as Testee;
 /**
  * Test case for the Context class.
  *
- * @package Inpsyde\Tests\Nonces
+ * @package Inpsyde\Nonces\Tests\Unit
  */
 class ContextTest extends TestCase {
 
@@ -61,12 +61,12 @@ class ContextTest extends TestCase {
 		$name = 'name';
 
 		return [
-			'with_name'    => [
+			'with_name'  => [
 				'expected' => $name,
 				'action'   => $action,
 				'name'     => $name,
 			],
-			'without_name' => [
+			'empty_name' => [
 				'expected' => $action . '_nonce',
 				'action'   => $action,
 				'name'     => '',

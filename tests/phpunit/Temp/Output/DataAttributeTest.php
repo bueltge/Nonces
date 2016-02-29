@@ -1,17 +1,17 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces\Output;
+namespace Inpsyde\Nonces\Tests\Unit\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\Output\DataAttribute as Testee;
-use Inpsyde\Tests\Nonces\TestCase;
+use Inpsyde\Nonces\Tests\Unit\TestCase;
 use Mockery;
 
 /**
  * Test case for the DataAttribute class.
  *
- * @package Inpsyde\Tests\Nonces\Output
+ * @package Inpsyde\Nonces\Tests\Unit\Output
  */
 class DataAttributeTest extends TestCase {
 

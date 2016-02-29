@@ -1,6 +1,6 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces;
+namespace Inpsyde\Nonces\Tests\Unit;
 
 use Brain\Monkey;
 use PHPUnit_Framework_TestCase;
@@ -8,7 +8,7 @@ use PHPUnit_Framework_TestCase;
 /**
  * Base test case that takes care of Monkey.
  *
- * @package Inpsyde\Tests\Nonces\TestCase
+ * @package Inpsyde\Nonces\Tests\Unit\TestCase
  */
 abstract class TestCase extends PHPUnit_Framework_TestCase {
 
