@@ -1,31 +1,28 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 namespace Inpsyde\Nonces\Validator;
-
-use Inpsyde\Nonces\Exception\InvalidArgumentException;
-use Inpsyde\Nonces\Context;
 
 /**
  * Class NonceRequestValidator
  *
  * @package Inpsyde\Nonces\Validator
  */
-class NonceRequestValidator implements Validator {
-
-	/**
-	 * @var Context
-	 */
-	private $context;
+class NonceRequestValidator extends NonceValidator implements Validator {
 
 	/**
 	 * @var string
 	 */
-	private $method;
+	private $name = '';
+
+	/**
+	 * @var string
+	 */
+	private $request_method = '';
 
 	/**
 	 * @var array
 	 */
-	private $allowed_methods = [
+	private $allowed_request_methods = [
 		'POST' => INPUT_POST,
 		'GET'  => INPUT_GET
 	];
@@ -33,23 +30,27 @@ class NonceRequestValidator implements Validator {
 	/**
 	 * NonceRequestValidator constructor.
 	 *
-	 * @param Context $context
-	 * @param string  $method
+	 * @param array $options    array(
+	 *                              'request_method' => String,     // Contains the Method "POST" or "GET" for usage in
+	 *                                                              // filter_input() and testing the REQUEST_METHOD-type.
+	 *                              'context'        => Context,    // Instance of the Context-class for validating the the
+	 *                                                              // nonce in request by the given name.
+	 *                          )
 	 */
-	public function __construct( Context $context, $method ) {
+	public function __construct( array $options ) {
 
-		$method = strtoupper( (string) $method );
-		if ( ! array_key_exists( $method, $this->allowed_methods ) ) {
-			$msg = sprintf(
-				'Invalid argument type method. <code>%s</code> given. Allowed types are: %s',
-				$method,
-				implode( ', ', $this->allowed_methods )
-			);
-			throw new InvalidArgumentException( $msg );
+		if ( isset( $options[ 'request_method' ] ) ) {
+			$this->request_method = $options[ 'request_method' ];
 		}
 
-		$this->context = $context;
-		$this->method  = $method;
+		if ( isset( $options[ 'context' ] ) && is_a( $options[ 'context' ], '\Inpsyde\Nonces\Context' ) ) {
+			/** @var \Inpsyde\Nonces\Context $context */
+			$context    = $options[ 'context' ];
+			$this->name = $context->get_name();
+
+			parent::__construct( [ 'action' => $context->get_action() ] );
+		}
+
 	}
 
 	/**
@@ -59,14 +60,18 @@ class NonceRequestValidator implements Validator {
 	 */
 	public function validate() {
 
-		if ( ! isset( $_SERVER[ 'REQUEST_METHOD' ] ) || $_SERVER[ 'REQUEST_METHOD' ] !== $this->method ) {
+		if ( ! isset( $_SERVER[ 'REQUEST_METHOD' ] ) || $_SERVER[ 'REQUEST_METHOD' ] !== $this->request_method ) {
 			return FALSE;
 		}
 
-		$input_type = $this->allowed_methods[ $this->method ];
-		$nonce      = filter_input( $input_type, $this->context->get_name() );
+		if ( ! isset( $this->allowed_request_methods[ $this->request_method ] ) ) {
+			return FALSE;
+		}
 
-		// wp_verify_nonce returns 1 or 2 on success and FALSE on failure.
-		return ! ! wp_verify_nonce( $nonce, $this->context->get_action() );
+		$input_type = $this->allowed_request_methods[ $this->request_method ];
+		// assign nonce for re-usage in parent-class NonceValidator.
+		$this->nonce = filter_input( $input_type, $this->name );
+
+		return parent::validate();
 	}
 }
