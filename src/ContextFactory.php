@@ -10,7 +10,7 @@ namespace Inpsyde\Nonces;
 class ContextFactory {
 
 	/**
-	 * Creates and returns a new Context instance.
+	 * Creates and returns a new nonce context instance.
 	 *
 	 * @param string $action The action which the nonce is for.
 	 * @param string $name   The name reference for the nonce (e.g., for the individual output classes).

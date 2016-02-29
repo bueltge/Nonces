@@ -12,11 +12,6 @@ use Inpsyde\Nonces\Context;
 class NonceRequestValidator implements Validator {
 
 	/**
-	 * @var string
-	 */
-	private $action = '';
-
-	/**
 	 * @var int[]
 	 */
 	private $allowed_request_methods = [
@@ -25,9 +20,9 @@ class NonceRequestValidator implements Validator {
 	];
 
 	/**
-	 * @var string
+	 * @var Context
 	 */
-	private $name = '';
+	private $context;
 
 	/**
 	 * @var string
@@ -46,12 +41,7 @@ class NonceRequestValidator implements Validator {
 		}
 
 		if ( isset( $properties['context'] ) && $properties['context'] instanceof Context ) {
-			/** @var Context $context */
-			$context = $properties['context'];
-
-			$this->action = $context->get_action();
-
-			$this->name = $context->get_name();
+			$this->context = $properties['context'];
 		}
 	}
 
@@ -70,8 +60,12 @@ class NonceRequestValidator implements Validator {
 			return false;
 		}
 
-		$nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->name );
+		if ( ! $this->context ) {
+			return false;
+		}
 
-		return (bool) wp_verify_nonce( $nonce, $this->action );
+		$nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->context->get_name() );
+
+		return (bool) wp_verify_nonce( $nonce, $this->context->get_action() );
 	}
 }

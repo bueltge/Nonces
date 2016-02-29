@@ -1,30 +1,43 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 namespace Inpsyde\Nonces\Validator;
 
 /**
- * Class ValidatorFactory
+ * Factory for individual validator instances.
  *
  * @package Inpsyde\Nonces\Validator
  */
 class ValidatorFactory {
 
 	/**
-	 * @param   string $class_name The name of the class. NonceValidator or NonceRequestValidator
-	 * @param   array  $properties The properties for the constructor method of the class.
+	 * @var string[]
+	 */
+	private $classes = [
+		'NonceValidator' => 'NonceValidator',
+		'Nonce'          => 'NonceValidator',
+
+		'NonceRequestValidator' => 'NonceRequestValidator',
+		'NonceRequest'          => 'NonceRequestValidator',
+		'RequestValidator'      => 'NonceRequestValidator',
+		'Request'               => 'NonceRequestValidator',
+	];
+
+	/**
+	 * Creates and returns a new validator instance of the given type.
+	 *
+	 * @param string $type       Validator type.
+	 * @param array  $properties The validator's constructor arguments.
 	 *
 	 * @return Validator
 	 */
-	public function create( $class_name, array $properties = [ ] ) {
+	public function create( $type, array $properties = [] ) {
 
-		$class_name = (string) $class_name;
+		if ( isset( $this->classes[ $type ] ) ) {
+			$class = __NAMESPACE__ . '\\' . $this->classes[ $type ];
 
-		if ( $class_name === 'NonceValidator' || $class_name === 'NonceRequestValidator' ) {
-			$class_name = __NAMESPACE__ . '\\' . $class_name;
-
-			return new $class_name( $properties );
+			return new $class( $properties );
 		}
 
-		return new AlwaysFalseValidator();
+		return new NullValidator();
 	}
 }

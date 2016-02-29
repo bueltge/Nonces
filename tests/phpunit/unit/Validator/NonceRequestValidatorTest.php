@@ -3,8 +3,10 @@
 namespace Inpsyde\Tests\Nonces\Validator;
 
 use Brain\Monkey;
+use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\Validator\NonceRequestValidator as Testee;
 use Inpsyde\Tests\Nonces\TestCase;
+use Mockery;
 
 /**
  * Test case for the NonceRequestValidator class.
@@ -19,23 +21,19 @@ class NonceRequestValidatorTest extends TestCase {
 	 * @dataProvider provide_validate_data
 	 *
 	 * @param bool   $expected
+	 * @param array  $properties
 	 * @param string $request_method
 	 *
 	 * @return void
 	 */
-	public function test_validate( $expected, $request_method ) {
+	public function test_validate( $expected, array $properties, $request_method ) {
 
-		$data = [ ];
+		$_SERVER['REQUEST_METHOD'] = $request_method;
 
-		if ( $request_method ) {
-			$data['request_method'] = $request_method;
+		$testee = new Testee( $properties );
 
-			$_SERVER['REQUEST_METHOD'] = $request_method;
-		}
-
-		$testee = new Testee( $data );
-
-		Monkey\Functions::when( 'wp_verify_nonce' )->justReturn( true );
+		Monkey\Functions::when( 'wp_verify_nonce' )
+			->justReturn( true );
 
 		$this->assertSame( $expected, $testee->validate() );
 	}
@@ -47,17 +45,59 @@ class NonceRequestValidatorTest extends TestCase {
 	 */
 	public function provide_validate_data() {
 
+		/** @var Context $context */
+		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
+			->shouldReceive( 'get_action' )
+			->shouldReceive( 'get_name' )
+			->getMock();
+
 		return [
 			'invalid_request_method' => [
 				'expected'       => false,
-				'request_method' => 'invalid',
+				'properties'     => [
+					'request_method' => 'invalid',
+					'context'        => $context,
+				],
+				'request_method' => 'GET',
 			],
-			'POST_request'           => [
-				'expected'       => true,
+			'fake_post_request'      => [
+				'expected'       => false,
+				'properties'     => [
+					'request_method' => 'POST',
+					'context'        => $context,
+				],
+				'request_method' => 'GET',
+			],
+			'fake_get_request'       => [
+				'expected'       => false,
+				'properties'     => [
+					'request_method' => 'GET',
+					'context'        => $context,
+				],
 				'request_method' => 'POST',
 			],
-			'GET_request'            => [
+			'invalid_context' => [
+				'expected'       => false,
+				'properties'     => [
+					'request_method' => 'GET',
+					'context'        => null,
+				],
+				'request_method' => 'GET',
+			],
+			'post_request'           => [
 				'expected'       => true,
+				'properties'     => [
+					'request_method' => 'POST',
+					'context'        => $context,
+				],
+				'request_method' => 'POST',
+			],
+			'get_request'            => [
+				'expected'       => true,
+				'properties'     => [
+					'request_method' => 'GET',
+					'context'        => $context,
+				],
 				'request_method' => 'GET',
 			],
 		];

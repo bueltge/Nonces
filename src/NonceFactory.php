@@ -10,7 +10,7 @@ namespace Inpsyde\Nonces;
 class NonceFactory {
 
 	/**
-	 * Creates and returns a new nonce for the given nonce context.
+	 * Creates and returns a new nonce instance for the given nonce context.
 	 *
 	 * @param Context $context Nonce context object.
 	 *
@@ -18,9 +18,7 @@ class NonceFactory {
 	 */
 	public function create( Context $context ) {
 
-		$action = $context->get_action();
-
-		$nonce = wp_create_nonce( $action );
+		$nonce = wp_create_nonce( $context->get_action() );
 
 		return new Nonce( $nonce );
 	}

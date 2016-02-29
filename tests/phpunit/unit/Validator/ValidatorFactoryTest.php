@@ -16,47 +16,42 @@ class ValidatorFactoryTest extends TestCase {
 	/**
 	 * Test for the create() method.
 	 *
-	 * @dataProvider provider_create
+	 * @dataProvider provide_create_data
 	 *
 	 * @param string $expected
-	 * @param string $class_name
+	 * @param string $type
 	 *
 	 * @return void
 	 */
-	public function test_create( $expected, $class_name ) {
+	public function test_create( $expected, $type ) {
 
 		$testee = new Testee();
-		$this->assertInstanceOf( $expected, $testee->create( $class_name ) );
+
+		$this->assertInstanceOf( $expected, $testee->create( $type ) );
 	}
 
 	/**
-	 *
 	 * Data provider for the test_create() method.
 	 *
 	 * @return array[]
 	 */
-	public function provider_create() {
+	public function provide_create_data() {
 
-		$ns = 'Inpsyde\\Nonces\\Validator\\';
+		$namespace = 'Inpsyde\\Nonces\\Validator\\';
 
 		return [
-			'nonce_validator'          => [
-				'expected'   => $ns . 'NonceValidator',
-				'class_name' => 'NonceValidator'
+			'nonce_validator'         => [
+				'expected' => $namespace . 'NonceValidator',
+				'type'     => 'NonceValidator',
 			],
-			'nonce_request_validator'  => [
-				'expected'   => $ns . 'NonceRequestValidator',
-				'class_name' => 'NonceRequestValidator'
+			'nonce_request_validator' => [
+				'expected' => $namespace . 'NonceRequestValidator',
+				'type'     => 'NonceRequestValidator',
 			],
-			'always_false_validator_1' => [
-				'expected'   => $ns . 'AlwaysFalseValidator',
-				'class_name' => 'AlwaysFalseValidator'
+			'invalid_validator'       => [
+				'expected' => $namespace . 'NullValidator',
+				'type'     => 'InvalidValidator',
 			],
-			'always_false_validator_2' => [
-				'expected'   => $ns . 'AlwaysFalseValidator',
-				'class_name' => ''
-			]
 		];
-
 	}
 }

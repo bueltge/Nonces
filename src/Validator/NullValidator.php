@@ -3,16 +3,19 @@
 namespace Inpsyde\Nonces\Validator;
 
 /**
- * Interface for all concrete validator objects.
+ * Null representation of a validator object.
  *
  * @package Inpsyde\Nonces\Validator
  */
-interface Validator {
+class NullValidator implements Validator {
 
 	/**
 	 * Validates a given nonce for a given action.
 	 *
 	 * @return bool
 	 */
-	public function validate();
+	public function validate() {
+
+		return false;
+	}
 }

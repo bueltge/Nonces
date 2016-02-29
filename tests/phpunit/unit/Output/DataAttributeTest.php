@@ -38,7 +38,8 @@ class DataAttributeTest extends TestCase {
 			->andReturn( $name )
 			->getMock();
 
-		Monkey\Functions::when( 'esc_attr' )->returnArg();
+		Monkey\Functions::when( 'esc_attr' )
+			->returnArg();
 
 		$this->assertSame( "data-$name=\"$nonce\"", $testee->get( $context ) );
 	}
@@ -66,7 +67,8 @@ class DataAttributeTest extends TestCase {
 			->andReturn( $name )
 			->getMock();
 
-		Monkey\Functions::when( 'esc_attr' )->returnArg();
+		Monkey\Functions::when( 'esc_attr' )
+			->returnArg();
 
 		$this->expectOutputString( "data-$name=\"$nonce\"" );
 
