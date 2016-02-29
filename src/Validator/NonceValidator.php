@@ -2,8 +2,6 @@
 
 namespace Inpsyde\Nonces\Validator;
 
-use Inpsyde\Nonces\Context;
-
 /**
  * Validates a given nonce for a given action.
  *
@@ -14,25 +12,22 @@ class NonceValidator implements Validator {
 	/**
 	 * @var string
 	 */
-	protected $action = '';
+	private $action = '';
 
 	/**
 	 * @var string
 	 */
-	protected $nonce = '';
+	private $nonce = '';
 
 	/**
 	 * Constructor. Sets up the properties.
 	 *
-	 * @param array $properties Validator properties (i.e., context and nonce value).
+	 * @param array $properties Validator properties (i.e., action and nonce value).
 	 */
 	public function __construct( array $properties = [] ) {
 
-		if ( isset( $properties['context'] ) && $properties['context'] instanceof Context ) {
-			/** @var Context $context */
-			$context = $properties['context'];
-
-			$this->action = $context->get_action();
+		if ( isset( $properties['action'] ) ) {
+			$this->action = (string) $properties['action'];
 		}
 
 		if ( isset( $properties['nonce'] ) ) {
