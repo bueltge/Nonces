@@ -20,21 +20,22 @@ class NonceRequestValidatorTest extends TestCase {
 	 *
 	 * @param bool   $expected
 	 * @param string $request_method
-	 * @param object $context
 	 *
 	 * @return void
 	 */
-	public function test_validate( $expected, $request_method, $context ) {
+	public function test_validate( $expected, $request_method ) {
 
-		$data = [];
+		$data = [ ];
+
 		if ( $request_method ) {
 			$data['request_method'] = $request_method;
-		}
-		if ( $context ) {
-			$data['context'] = $context;
+
+			$_SERVER['REQUEST_METHOD'] = $request_method;
 		}
 
 		$testee = new Testee( $data );
+
+		Monkey\Functions::when( 'wp_verify_nonce' )->justReturn( true );
 
 		$this->assertSame( $expected, $testee->validate() );
 	}
@@ -50,7 +51,10 @@ class NonceRequestValidatorTest extends TestCase {
 			'invalid_request_method' => [
 				'expected'       => false,
 				'request_method' => 'invalid',
-				'context'        => null,
+			],
+			'POST_request'           => [
+				'expected'       => true,
+				'request_method' => 'POST',
 			],
 		];
 	}
