@@ -24,7 +24,7 @@ class NonceValidator implements Validator {
 	 *
 	 * @param array $data Validator data (i.e., action and nonce value).
 	 */
-	public function __construct( array $data = array() ) {
+	public function __construct( array $data = [] ) {
 
 		if ( isset( $data['action'] ) ) {
 			$this->action = (string) $data['action'];
