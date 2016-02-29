@@ -2,12 +2,22 @@
 
 namespace Inpsyde\Nonces\Validator;
 
+use Inpsyde\Nonces\Context;
+
 /**
- * Class NonceRequestValidator
+ * Validates the nonce given in a request for the given action.
  *
  * @package Inpsyde\Nonces\Validator
  */
-class NonceRequestValidator extends NonceValidator implements Validator {
+class NonceRequestValidator extends NonceValidator {
+
+	/**
+	 * @var int[]
+	 */
+	private $allowed_request_methods = [
+		'POST' => INPUT_POST,
+		'GET'  => INPUT_GET,
+	];
 
 	/**
 	 * @var string
@@ -20,57 +30,42 @@ class NonceRequestValidator extends NonceValidator implements Validator {
 	private $request_method = '';
 
 	/**
-	 * @var array
-	 */
-	private $allowed_request_methods = [
-		'POST' => INPUT_POST,
-		'GET'  => INPUT_GET
-	];
-
-	/**
-	 * NonceRequestValidator constructor.
+	 * Constructor. Sets up the properties.
 	 *
-	 * @param array $options    array(
-	 *                              'request_method' => String,     // Contains the Method "POST" or "GET" for usage in
-	 *                                                              // filter_input() and testing the REQUEST_METHOD-type.
-	 *                              'context'        => Context,    // Instance of the Context-class for validating the the
-	 *                                                              // nonce in request by the given name.
-	 *                          )
+	 * @param array $properties Validator properties (i.e., request method and nonce context).
 	 */
-	public function __construct( array $options ) {
+	public function __construct( array $properties = [] ) {
 
-		if ( isset( $options[ 'request_method' ] ) ) {
-			$this->request_method = $options[ 'request_method' ];
+		if ( isset( $properties['request_method'] ) ) {
+			$this->request_method = $properties['request_method'];
 		}
 
-		if ( isset( $options[ 'context' ] ) && is_a( $options[ 'context' ], '\Inpsyde\Nonces\Context' ) ) {
-			/** @var \Inpsyde\Nonces\Context $context */
-			$context    = $options[ 'context' ];
+		if ( isset( $properties['context'] ) && $properties['context'] instanceof Context ) {
+			/** @var Context $context */
+			$context = $properties['context'];
+
 			$this->name = $context->get_name();
 
-			parent::__construct( [ 'action' => $context->get_action() ] );
+			parent::__construct( [ 'context' => $context ] );
 		}
-
 	}
 
 	/**
-	 * Validates a given context and returns true on success or false on failure.
+	 * Validates the nonce given in a request for the given action.
 	 *
-	 * @return bool true|false
+	 * @return bool
 	 */
 	public function validate() {
 
-		if ( ! isset( $_SERVER[ 'REQUEST_METHOD' ] ) || $_SERVER[ 'REQUEST_METHOD' ] !== $this->request_method ) {
-			return FALSE;
+		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] !== $this->request_method ) {
+			return false;
 		}
 
 		if ( ! isset( $this->allowed_request_methods[ $this->request_method ] ) ) {
-			return FALSE;
+			return false;
 		}
 
-		$input_type = $this->allowed_request_methods[ $this->request_method ];
-		// assign nonce for re-usage in parent-class NonceValidator.
-		$this->nonce = filter_input( $input_type, $this->name );
+		$this->nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->name );
 
 		return parent::validate();
 	}

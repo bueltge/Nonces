@@ -1,97 +1,56 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Tests\Nonces;
+namespace Inpsyde\Tests\Nonces\Validator;
 
 use Brain\Monkey;
-use Inpsyde\Nonces\Exception\InvalidArgumentException;
-use Mockery;
 use Inpsyde\Nonces\Validator\NonceRequestValidator as Testee;
+use Inpsyde\Tests\Nonces\TestCase;
 
 /**
- * Tests for the Context class.
+ * Test case for the NonceRequestValidator class.
  *
- * @package Inpsyde\Tests\Nonces
+ * @package Inpsyde\Tests\Nonces\Validator
  */
-class NonceRequestValidator extends TestCase {
+class NonceRequestValidatorTest extends TestCase {
 
 	/**
-	 * Testing the Exception by an invalid constructor argument.
-	 */
-	public function test_exception() {
-
-		$this->expectException( InvalidArgumentException::class );
-
-		/** @var \Inpsyde\Nonces\Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-		                  ->shouldReceive( 'get_action' )
-		                  ->shouldReceive( 'get_name' )
-		                  ->getMock();
-		new Testee( $context, 'invalid_request_method' );
-	}
-
-	/**
-	 * Test for request validator by the given dataset.
+	 * Test for the validate() method.
 	 *
-	 * @dataProvider provide_post_data
+	 * @dataProvider provide_validate_data
 	 *
-	 * @param $method
-	 * @param $name
-	 * @param $request_name
-	 * @param $nonce_return
-	 * @param $expected
+	 * @param bool   $expected
+	 * @param string $request_method
+	 * @param object $context
 	 *
 	 * @return void
 	 */
-	public function test_post_request( $method, $name, $request_name, $nonce_return, $expected ) {
+	public function test_validate( $expected, $request_method, $context ) {
 
-		$_SERVER[ 'REQUEST_METHOD' ] = $method;
-		$_POST[ $request_name ]      = 'nonce';
+		$data = [];
+		if ( $request_method ) {
+			$data['request_method'] = $request_method;
+		}
+		if ( $context ) {
+			$data['context'] = $context;
+		}
 
-		Monkey\Functions::expect( 'wp_verify_nonce' )
-		                ->andReturn( $nonce_return );
+		$testee = new Testee( $data );
 
-		/** @var \Inpsyde\Nonces\Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-		                  ->shouldReceive( 'get_action' )
-		                  ->andReturn( 'action' )
-		                  ->shouldReceive( 'get_name' )
-		                  ->andReturn( $name )
-		                  ->getMock();
-
-		$testee = new Testee( $context, 'POST' );
 		$this->assertSame( $expected, $testee->validate() );
 	}
 
-	public function provide_post_data() {
+	/**
+	 * Data provider for the test_validate() method.
+	 *
+	 * @return array[]
+	 */
+	public function provide_validate_data() {
 
 		return [
-			'valid_data'                   => [
-				'method'       => 'POST',
-				'name'         => 'the_name',
-				'request_name' => 'the_name',
-				'nonce_return' => TRUE,
-				'expected'     => TRUE
-			],
-			'invalid_nonce_value'          => [
-				'method'       => 'POST',
-				'name'         => 'the_name',
-				'request_name' => 'the_name',
-				'nonce_return' => FALSE,
-				'expected'     => FALSE
-			],
-			'invalid_nonce_not_in_request' => [
-				'method'       => 'POST',
-				'name'         => 'the_name',
-				'request_name' => 'other_name',
-				'nonce_return' => FALSE,
-				'expected'     => FALSE
-			],
-			'invalid_request_type'         => [
-				'method'       => 'GET',
-				'name'         => 'the_name',
-				'request_name' => 'the_name',
-				'nonce_return' => TRUE,
-				'expected'     => FALSE
+			'invalid_request_method' => [
+				'expected'       => false,
+				'request_method' => 'invalid',
+				'context'        => null,
 			],
 		];
 	}
