@@ -3,13 +3,13 @@
 namespace Inpsyde\Nonces\Validator;
 
 /**
- * Class NonceValidator
+ * Validates a given nonce for a given action.
  *
  * @package Inpsyde\Nonces\Validator
  */
 class NonceValidator implements Validator {
 
-	/***
+	/**
 	 * @var string
 	 */
 	protected $action = '';
@@ -20,32 +20,28 @@ class NonceValidator implements Validator {
 	protected $nonce = '';
 
 	/**
-	 * NonceValidator constructor.
+	 * Constructor. Sets up the properties.
 	 *
-	 * @param array $options    array(
-	 *                              'action' => String,     // Name of the action for re-use in wp_verify_nonce.
-	 *                              'nonce'  => String      // The actual nonce-value which has to be validated.
-	 *                          )
+	 * @param array $data Validator data (i.e., action and nonce value).
 	 */
-	public function __construct( array $options ) {
+	public function __construct( array $data = array() ) {
 
-		if ( isset( $options[ 'action' ] ) ) {
-			$this->action = (string) $options[ 'action' ];
+		if ( isset( $data['action'] ) ) {
+			$this->action = (string) $data['action'];
 		}
 
-		if ( isset( $options[ 'nonce' ] ) ) {
-			$this->nonce = (string) $options[ 'nonce' ];
+		if ( isset( $data['nonce'] ) ) {
+			$this->nonce = (string) $data['nonce'];
 		}
 	}
 
 	/**
-	 * Validates a given context and returns true on success or false on failure.
+	 * Validates a given nonce for a given action.
 	 *
-	 * @return bool true|false
+	 * @return bool
 	 */
 	public function validate() {
 
-		// wp_verify_nonce returns 1 or 2 on success and FALSE on failure.
 		return (bool) wp_verify_nonce( $this->nonce, $this->action );
 	}
 }

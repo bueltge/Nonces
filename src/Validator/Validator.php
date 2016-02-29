@@ -1,13 +1,18 @@
-<?php
+<?php # -*- coding: utf-8 -*-
 
 namespace Inpsyde\Nonces\Validator;
 
+/**
+ * Interface for all concrete Validator objects.
+ *
+ * @package Inpsyde\Nonces\Validator
+ */
 interface Validator {
 
 	/**
-	 * Validates a given context and returns true on success or false on failure.
+	 * Validates a given nonce for a given action.
 	 *
-	 * @return bool true|false
+	 * @return bool
 	 */
 	public function validate();
 }
