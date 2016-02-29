@@ -56,6 +56,10 @@ class NonceRequestValidatorTest extends TestCase {
 				'expected'       => true,
 				'request_method' => 'POST',
 			],
+			'GET_request'            => [
+				'expected'       => true,
+				'request_method' => 'GET',
+			],
 		];
 	}
 }
