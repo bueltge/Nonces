@@ -1,11 +1,10 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces\Tests\Unit;
+namespace Inpsyde\Nonces\Tests\Integration;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\NonceFactory as Testee;
-use Mockery;
 
 /**
  * Test case for the NonceFactory class.
@@ -23,13 +22,15 @@ class NonceFactoryTest extends TestCase {
 
 		$testee = new Testee();
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->getMock();
+		$context = new Context( 'action' );
 
-		Monkey\Functions::when( 'wp_create_nonce' );
+		$nonce_value = 'nonce';
 
-		$this->assertInstanceOf( 'Inpsyde\Nonces\Nonce', $testee->create( $context ) );
+		Monkey\Functions::when( 'wp_create_nonce' )
+			->justReturn( $nonce_value );
+
+		$nonce = $testee->create( $context );
+
+		$this->assertSame( $nonce_value, $nonce->get() );
 	}
 }

@@ -1,17 +1,16 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces\Tests\Unit\Output;
+namespace Inpsyde\Nonces\Tests\Integration\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\Output\NoncedUrl as Testee;
-use Inpsyde\Nonces\Tests\Unit\TestCase;
-use Mockery;
+use Inpsyde\Nonces\Tests\Integration\TestCase;
 
 /**
  * Test case for the NoncedUrl class.
  *
- * @package Inpsyde\Nonces\Tests\Unit\Output
+ * @package Inpsyde\Nonces\Tests\Integration\Output
  */
 class NoncedUrlTest extends TestCase {
 
@@ -29,11 +28,7 @@ class NoncedUrlTest extends TestCase {
 		Monkey\Functions::when( 'wp_nonce_url' )
 			->justReturn( $nonced_url );
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->shouldReceive( 'get_name' )
-			->getMock();
+		$context = new Context( 'action' );
 
 		$this->assertSame( $nonced_url, $testee->get( 'url', $context ) );
 	}
@@ -52,11 +47,7 @@ class NoncedUrlTest extends TestCase {
 		Monkey\Functions::when( 'wp_nonce_url' )
 			->justReturn( $nonced_url );
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->shouldReceive( 'get_name' )
-			->getMock();
+		$context = new Context( 'action' );
 
 		$this->expectOutputString( $nonced_url );
 

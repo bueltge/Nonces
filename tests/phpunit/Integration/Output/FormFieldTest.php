@@ -1,17 +1,16 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces\Tests\Unit\Output;
+namespace Inpsyde\Nonces\Tests\Integration\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\Output\FormField as Testee;
-use Inpsyde\Nonces\Tests\Unit\TestCase;
-use Mockery;
+use Inpsyde\Nonces\Tests\Integration\TestCase;
 
 /**
  * Test case for the FormField class.
  *
- * @package Inpsyde\Nonces\Tests\Unit\Output
+ * @package Inpsyde\Nonces\Tests\Integration\Output
  */
 class FormFieldTest extends TestCase {
 
@@ -24,11 +23,7 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->shouldReceive( 'get_name' )
-			->getMock();
+		$context = new Context( 'action' );
 
 		$nonce_field = 'nonce_field';
 
@@ -47,11 +42,7 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->shouldReceive( 'get_name' )
-			->getMock();
+		$context = new Context( 'action' );
 
 		$nonce_field = 'nonce_field';
 

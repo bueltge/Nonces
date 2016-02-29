@@ -53,7 +53,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Inpsyde\\Tests\\Nonces\\": "tests/phpunit/unit/"
+			"Inpsyde\\Nonces\\Tests\\": "tests/phpunit/"
 		}
 	},
 	"extra": {

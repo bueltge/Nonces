@@ -1,17 +1,16 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces\Tests\Unit\Output;
+namespace Inpsyde\Nonces\Tests\Integration\Output;
 
 use Brain\Monkey;
 use Inpsyde\Nonces\Context;
 use Inpsyde\Nonces\Output\DataAttribute as Testee;
-use Inpsyde\Nonces\Tests\Unit\TestCase;
-use Mockery;
+use Inpsyde\Nonces\Tests\Integration\TestCase;
 
 /**
  * Test case for the DataAttribute class.
  *
- * @package Inpsyde\Nonces\Tests\Unit\Output
+ * @package Inpsyde\Nonces\Tests\Integration\Output
  */
 class DataAttributeTest extends TestCase {
 
@@ -29,14 +28,12 @@ class DataAttributeTest extends TestCase {
 		Monkey\Functions::when( 'wp_create_nonce' )
 			->justReturn( $nonce );
 
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
 		$name = 'name';
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->shouldReceive( 'get_name' )
-			->andReturn( $name )
-			->getMock();
+		$context = new Context( 'action', $name );
 
 		Monkey\Functions::when( 'esc_attr' )
 			->returnArg();
@@ -58,14 +55,12 @@ class DataAttributeTest extends TestCase {
 		Monkey\Functions::when( 'wp_create_nonce' )
 			->justReturn( $nonce );
 
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
 		$name = 'name';
 
-		/** @var Context $context */
-		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
-			->shouldReceive( 'get_action' )
-			->shouldReceive( 'get_name' )
-			->andReturn( $name )
-			->getMock();
+		$context = new Context( 'action', $name );
 
 		Monkey\Functions::when( 'esc_attr' )
 			->returnArg();
