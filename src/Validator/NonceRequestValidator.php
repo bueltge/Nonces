@@ -9,7 +9,12 @@ use Inpsyde\Nonces\Context;
  *
  * @package Inpsyde\Nonces\Validator
  */
-class NonceRequestValidator extends NonceValidator {
+class NonceRequestValidator implements Validator {
+
+	/**
+	 * @var string
+	 */
+	private $action = '';
 
 	/**
 	 * @var int[]
@@ -44,9 +49,9 @@ class NonceRequestValidator extends NonceValidator {
 			/** @var Context $context */
 			$context = $properties['context'];
 
-			$this->name = $context->get_name();
+			$this->action = $context->get_action();
 
-			parent::__construct( [ 'context' => $context ] );
+			$this->name = $context->get_name();
 		}
 	}
 
@@ -65,8 +70,8 @@ class NonceRequestValidator extends NonceValidator {
 			return false;
 		}
 
-		$this->nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->name );
+		$nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->name );
 
-		return parent::validate();
+		return (bool) wp_verify_nonce( $nonce, $this->action );
 	}
 }
