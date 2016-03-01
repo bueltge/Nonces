@@ -23,12 +23,20 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
-		$context = new Context( 'action' );
+		$action = 'action';
+
+		$name = 'name';
+
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
+		$context = new Context( $action, $name );
 
 		$nonce_field = 'nonce_field';
 
-		Monkey\Functions::when( 'wp_nonce_field' )
-			->justReturn( $nonce_field );
+		Monkey\Functions::expect( 'wp_nonce_field' )
+			->with( $action, $name, false, false )
+			->andReturn( $nonce_field );
 
 		$this->assertSame( $nonce_field, $testee->get( $context ) );
 	}
@@ -42,12 +50,20 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
-		$context = new Context( 'action' );
+		$action = 'action';
+
+		$name = 'name';
+
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
+		$context = new Context( $action, $name );
 
 		$nonce_field = 'nonce_field';
 
-		Monkey\Functions::when( 'wp_nonce_field' )
-			->justReturn( $nonce_field );
+		Monkey\Functions::expect( 'wp_nonce_field' )
+			->with( $action, $name, false, false )
+			->andReturn( $nonce_field );
 
 		$this->expectOutputString( $nonce_field );
 

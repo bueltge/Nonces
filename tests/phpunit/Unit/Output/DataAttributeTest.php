@@ -24,16 +24,20 @@ class DataAttributeTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
 		$nonce = 'nonce';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce );
+		Monkey\Functions::expect( 'wp_create_nonce' )
+			->with( $action )
+			->andReturn( $nonce );
 
 		$name = 'name';
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->shouldReceive( 'get_name' )
 			->andReturn( $name )
 			->getMock();
@@ -53,16 +57,20 @@ class DataAttributeTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
 		$nonce = 'nonce';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce );
+		Monkey\Functions::expect( 'wp_create_nonce' )
+			->with( $action )
+			->andReturn( $nonce );
 
 		$name = 'name';
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->shouldReceive( 'get_name' )
 			->andReturn( $name )
 			->getMock();

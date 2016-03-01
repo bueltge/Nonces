@@ -26,10 +26,10 @@ class ContextFactoryTest extends TestCase {
 	 */
 	public function test_create( $expected_action, $expected_name, $action, $name ) {
 
+		$testee = new Testee();
+
 		Monkey\Functions::when( 'sanitize_title_with_dashes' )
 			->returnArg();
-
-		$testee = new Testee();
 
 		$context = $testee->create( $action, $name );
 

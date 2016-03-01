@@ -24,18 +24,27 @@ class NoncedUrlTest extends TestCase {
 
 		$testee = new Testee();
 
-		$nonced_url = 'nonced_url';
+		$action = 'action';
 
-		Monkey\Functions::when( 'wp_nonce_url' )
-			->justReturn( $nonced_url );
+		$name = 'name';
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->shouldReceive( 'get_name' )
+			->andReturn( $name )
 			->getMock();
 
-		$this->assertSame( $nonced_url, $testee->get( 'url', $context ) );
+		$url = 'url';
+
+		$nonced_url = 'nonced_url';
+
+		Monkey\Functions::expect( 'wp_nonce_url' )
+			->with( $url, $action, $name )
+			->andReturn( $nonced_url );
+
+		$this->assertSame( $nonced_url, $testee->get( $url, $context ) );
 	}
 
 	/**
@@ -47,19 +56,28 @@ class NoncedUrlTest extends TestCase {
 
 		$testee = new Testee();
 
-		$nonced_url = 'nonced_url';
+		$action = 'action';
 
-		Monkey\Functions::when( 'wp_nonce_url' )
-			->justReturn( $nonced_url );
+		$name = 'name';
 
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->shouldReceive( 'get_name' )
+			->andReturn( $name )
 			->getMock();
+
+		$url = 'url';
+
+		$nonced_url = 'nonced_url';
+
+		Monkey\Functions::expect( 'wp_nonce_url' )
+			->with( $url, $action, $name )
+			->andReturn( $nonced_url );
 
 		$this->expectOutputString( $nonced_url );
 
-		$testee->render( 'url', $context );
+		$testee->render( $url, $context );
 	}
 }

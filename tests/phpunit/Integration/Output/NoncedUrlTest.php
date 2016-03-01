@@ -23,14 +23,24 @@ class NoncedUrlTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
+		$name = 'name';
+
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
+		$context = new Context( $action, $name );
+
+		$url = 'url';
+
 		$nonced_url = 'nonced_url';
 
-		Monkey\Functions::when( 'wp_nonce_url' )
-			->justReturn( $nonced_url );
+		Monkey\Functions::expect( 'wp_nonce_url' )
+			->with( $url, $action, $name )
+			->andReturn( $nonced_url );
 
-		$context = new Context( 'action' );
-
-		$this->assertSame( $nonced_url, $testee->get( 'url', $context ) );
+		$this->assertSame( $nonced_url, $testee->get( $url, $context ) );
 	}
 
 	/**
@@ -42,12 +52,22 @@ class NoncedUrlTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
+		$name = 'name';
+
+		Monkey\Functions::when( 'sanitize_title_with_dashes' )
+			->returnArg();
+
+		$context = new Context( $action, $name );
+
+		$url = 'url';
+
 		$nonced_url = 'nonced_url';
 
-		Monkey\Functions::when( 'wp_nonce_url' )
-			->justReturn( $nonced_url );
-
-		$context = new Context( 'action' );
+		Monkey\Functions::expect( 'wp_nonce_url' )
+			->with( $url, $action, $name )
+			->andReturn( $nonced_url );
 
 		$this->expectOutputString( $nonced_url );
 

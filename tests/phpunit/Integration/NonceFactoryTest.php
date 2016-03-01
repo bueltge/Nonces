@@ -22,12 +22,17 @@ class NonceFactoryTest extends TestCase {
 
 		$testee = new Testee();
 
-		$context = new Context( 'action' );
+		$action = 'action';
+
+		Monkey\Functions::when( 'sanitize_title_with_dashes' );
+
+		$context = new Context( $action );
 
 		$nonce_value = 'nonce';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce_value );
+		Monkey\Functions::expect( 'wp_create_nonce' )
+			->with( $action )
+			->andReturn( $nonce_value );
 
 		$nonce = $testee->create( $context );
 

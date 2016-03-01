@@ -20,10 +20,15 @@ class NonceValidatorTest extends TestCase {
 	 */
 	public function test_validate() {
 
-		$testee = new Testee();
+		$action = 'action';
 
-		Monkey\Functions::when( 'wp_verify_nonce' )
-			->justReturn( true );
+		$nonce = 'nonce';
+
+		$testee = new Testee( compact( 'action', 'nonce' ) );
+
+		Monkey\Functions::expect( 'wp_verify_nonce' )
+			->with( $nonce, $action )
+			->andReturn( true );
 
 		$this->assertTrue( $testee->validate() );
 	}

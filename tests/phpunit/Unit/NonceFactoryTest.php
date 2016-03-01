@@ -23,12 +23,16 @@ class NonceFactoryTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->getMock();
 
-		Monkey\Functions::when( 'wp_create_nonce' );
+		Monkey\Functions::expect( 'wp_create_nonce' )
+			->with( $action );
 
 		$this->assertInstanceOf( 'Inpsyde\Nonces\Nonce', $testee->create( $context ) );
 	}

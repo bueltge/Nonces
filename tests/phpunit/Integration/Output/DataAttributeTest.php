@@ -23,17 +23,20 @@ class DataAttributeTest extends TestCase {
 
 		$testee = new Testee();
 
-		$nonce = 'nonce';
+		$action = 'action';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce );
+		$name = 'name';
 
 		Monkey\Functions::when( 'sanitize_title_with_dashes' )
 			->returnArg();
 
-		$name = 'name';
+		$context = new Context( $action, $name );
 
-		$context = new Context( 'action', $name );
+		$nonce = 'nonce';
+
+		Monkey\Functions::expect( 'wp_create_nonce' )
+			->with( $action )
+			->andReturn( $nonce );
 
 		Monkey\Functions::when( 'esc_attr' )
 			->returnArg();
@@ -50,17 +53,20 @@ class DataAttributeTest extends TestCase {
 
 		$testee = new Testee();
 
-		$nonce = 'nonce';
+		$action = 'action';
 
-		Monkey\Functions::when( 'wp_create_nonce' )
-			->justReturn( $nonce );
+		$name = 'name';
 
 		Monkey\Functions::when( 'sanitize_title_with_dashes' )
 			->returnArg();
 
-		$name = 'name';
+		$context = new Context( $action, $name );
 
-		$context = new Context( 'action', $name );
+		$nonce = 'nonce';
+
+		Monkey\Functions::expect( 'wp_create_nonce' )
+			->with( $action )
+			->andReturn( $nonce );
 
 		Monkey\Functions::when( 'esc_attr' )
 			->returnArg();

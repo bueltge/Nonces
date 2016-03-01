@@ -24,16 +24,23 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
+		$name = 'name';
+
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->shouldReceive( 'get_name' )
+			->andReturn( $name )
 			->getMock();
 
 		$nonce_field = 'nonce_field';
 
-		Monkey\Functions::when( 'wp_nonce_field' )
-			->justReturn( $nonce_field );
+		Monkey\Functions::expect( 'wp_nonce_field' )
+			->with( $action, $name, false, false )
+			->andReturn( $nonce_field );
 
 		$this->assertSame( $nonce_field, $testee->get( $context ) );
 	}
@@ -47,16 +54,23 @@ class FormFieldTest extends TestCase {
 
 		$testee = new Testee();
 
+		$action = 'action';
+
+		$name = 'name';
+
 		/** @var Context $context */
 		$context = Mockery::mock( 'Inpsyde\Nonces\Context' )
 			->shouldReceive( 'get_action' )
+			->andReturn( $action )
 			->shouldReceive( 'get_name' )
+			->andReturn( $name )
 			->getMock();
 
 		$nonce_field = 'nonce_field';
 
-		Monkey\Functions::when( 'wp_nonce_field' )
-			->justReturn( $nonce_field );
+		Monkey\Functions::expect( 'wp_nonce_field' )
+			->with( $action, $name, false, false )
+			->andReturn( $nonce_field );
 
 		$this->expectOutputString( $nonce_field );
 

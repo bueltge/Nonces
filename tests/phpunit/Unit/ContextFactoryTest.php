@@ -19,9 +19,9 @@ class ContextFactoryTest extends TestCase {
 	 */
 	public function test_create() {
 
-		Monkey\Functions::when( 'sanitize_title_with_dashes' );
-
 		$testee = new Testee();
+
+		Monkey\Functions::when( 'sanitize_title_with_dashes' );
 
 		$this->assertInstanceOf( 'Inpsyde\Nonces\Context', $testee->create( 'action' ) );
 	}
