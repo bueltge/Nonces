@@ -20,9 +20,14 @@ class NonceRequestValidator implements Validator {
 	];
 
 	/**
-	 * @var Context
+	 * @var string
 	 */
-	private $context;
+	private $nonce_action;
+
+	/**
+	 * @var string
+	 */
+	private $nonce_name;
 
 	/**
 	 * @var string
@@ -32,23 +37,43 @@ class NonceRequestValidator implements Validator {
 	/**
 	 * Constructor. Sets up the properties.
 	 *
-	 * @param array $properties Validator properties (i.e., request method and nonce context).
+	 * @param string         $request_method          The request method the validator is designed for.
+	 * @param Context|string $nonce_context_or_action Nonce context object, or nonce action.
+	 * @param string         $nonce_name              Optional. The name reference for the nonce (e.g., for output).
+	 *                                                Defaults to empty string.
 	 */
-	public function __construct( array $properties = [] ) {
+	public function __construct( $request_method, $nonce_context_or_action, $nonce_name = '' ) {
 
-		if ( isset( $properties['request_method'] ) ) {
-			$this->request_method = $properties['request_method'];
-		}
+		$this->request_method = (string) $request_method;
 
-		if ( isset( $properties['context'] ) && $properties['context'] instanceof Context ) {
-			$this->context = $properties['context'];
-		}
+		$context = $nonce_context_or_action instanceof Context
+			? $nonce_context_or_action
+			: new Context( $nonce_context_or_action, $nonce_name );
+
+		$this->nonce_action = $context->get_action();
+
+		$this->nonce_name = $nonce_name
+			? (string) $nonce_name
+			: $context->get_name();
 	}
 
 	/**
-	 * Validates the nonce given in a request for the given action.
+	 * Creates and returns a new nonce request validator instance for the given request method and nonce context.
 	 *
-	 * @return bool
+	 * @param string  $request_method The request method the validator is designed for.
+	 * @param Context $context        Nonce context object.
+	 *
+	 * @return static Nonce instance.
+	 */
+	public static function from_context( $request_method, Context $context ) {
+
+		return new static( $request_method, $context );
+	}
+
+	/**
+	 * Validates a nonce given in the current request.
+	 *
+	 * @return bool Whether or not the nonce is valid.
 	 */
 	public function validate() {
 
@@ -60,12 +85,8 @@ class NonceRequestValidator implements Validator {
 			return false;
 		}
 
-		if ( ! $this->context ) {
-			return false;
-		}
+		$nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->nonce_name );
 
-		$nonce = filter_input( $this->allowed_request_methods[ $this->request_method ], $this->context->get_name() );
-
-		return (bool) wp_verify_nonce( $nonce, $this->context->get_action() );
+		return (bool) wp_verify_nonce( $nonce, $this->nonce_action );
 	}
 }

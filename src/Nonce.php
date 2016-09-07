@@ -25,11 +25,23 @@ class Nonce {
 	}
 
 	/**
-	 * Returns the nonce value.
+	 * Creates and returns a new nonce instance for the given nonce context.
 	 *
-	 * @return string
+	 * @param Context $context Nonce context object.
+	 *
+	 * @return static Nonce instance.
 	 */
-	public function get() {
+	public static function from_context( Context $context ) {
+
+		return new static( wp_create_nonce( $context->get_action() ) );
+	}
+
+	/**
+	 * Returns the string representation of the nonce (i.ee, its value).
+	 *
+	 * @return string Nonce value.
+	 */
+	public function __toString() {
 
 		return $this->nonce;
 	}

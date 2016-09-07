@@ -23,7 +23,7 @@ class Context {
 	 * Constructor. Sets up the properties.
 	 *
 	 * @param string $action The action which the nonce is for.
-	 * @param string $name   The name reference for the nonce (e.g., for the individual output classes).
+	 * @param string $name   Optional. The name reference for the nonce (e.g., for output). Defaults to empty string.
 	 */
 	public function __construct( $action, $name = '' ) {
 
@@ -31,7 +31,7 @@ class Context {
 
 		$name = (string) $name;
 		if ( '' === $name ) {
-			$name = $this->action . '_nonce';
+			$name = "{$this->action}_nonce";
 		}
 		$this->name = sanitize_title_with_dashes( $name );
 	}
@@ -39,7 +39,7 @@ class Context {
 	/**
 	 * Returns the nonce action.
 	 *
-	 * @return string
+	 * @return string Nonce action
 	 */
 	public function get_action() {
 
@@ -49,7 +49,7 @@ class Context {
 	/**
 	 * Returns the name reference for the nonce.
 	 *
-	 * @return string
+	 * @return string Name reference.
 	 */
 	public function get_name() {
 
