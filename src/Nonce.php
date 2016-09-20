@@ -3,46 +3,28 @@
 namespace Inpsyde\Nonces;
 
 /**
- * Nonce model.
+ * Interface for all nonce implementations.
  *
  * @package Inpsyde\Nonces
+ * @since   1.0.0
  */
-class Nonce {
+interface Nonce {
 
 	/**
-	 * @var string
-	 */
-	private $nonce;
-
-	/**
-	 * Constructor. Sets up the properties.
+	 * Returns the nonce action.
 	 *
-	 * @param string $nonce Nonce value.
+	 * @since 1.0.0
+	 *
+	 * @return string Nonce action.
 	 */
-	public function __construct( $nonce ) {
-
-		$this->nonce = (string) $nonce;
-	}
+	public function action();
 
 	/**
-	 * Creates and returns a new nonce instance for the given nonce context.
+	 * Returns the nonce value.
 	 *
-	 * @param Context $context Nonce context object.
-	 *
-	 * @return static Nonce instance.
-	 */
-	public static function from_context( Context $context ) {
-
-		return new static( wp_create_nonce( $context->get_action() ) );
-	}
-
-	/**
-	 * Returns the string representation of the nonce (i.ee, its value).
+	 * @since 1.0.0
 	 *
 	 * @return string Nonce value.
 	 */
-	public function __toString() {
-
-		return $this->nonce;
-	}
+	public function __toString();
 }
