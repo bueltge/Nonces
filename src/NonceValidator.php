@@ -11,14 +11,14 @@ namespace Inpsyde\Nonces;
 interface NonceValidator {
 
 	/**
-	 * Validates the given nonce in the given context.
+	 * Validates the given nonce for the given action.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $nonce   Nonce value.
-	 * @param mixed  $context Optional. Validation context. Defaults to null.
+	 * @param string $nonce  Nonce value.
+	 * @param string $action Optional. Nonce action. Defaults to empty string.
 	 *
-	 * @return bool Whether or not the nonce is valid in the given context.
+	 * @return bool Whether or not the nonce is valid for the given action.
 	 */
-	public function validate_nonce( $nonce, $context = null );
+	public function validate( $nonce, $action = '' );
 }

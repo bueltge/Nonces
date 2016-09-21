@@ -1,11 +1,13 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces;
+namespace Inpsyde\Nonces\Nonce;
+
+use Inpsyde\Nonces\Nonce;
 
 /**
  * WordPress-specific nonce implementation.
  *
- * @package Inpsyde\Nonces
+ * @package Inpsyde\Nonces\Nonce
  * @since   1.0.0
  */
 final class WPNonce implements Nonce {
@@ -31,7 +33,7 @@ final class WPNonce implements Nonce {
 
 		$this->action = (string) $action;
 
-		$this->nonce = (string) wp_create_nonce( $action );
+		$this->nonce = (string) wp_create_nonce( (string) $action );
 	}
 
 	/**

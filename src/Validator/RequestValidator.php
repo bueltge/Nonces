@@ -1,14 +1,16 @@
 <?php # -*- coding: utf-8 -*-
 
-namespace Inpsyde\Nonces;
+namespace Inpsyde\Nonces\Validator;
+
+use Inpsyde\Nonces\NonceValidator;
 
 /**
- * Request-based nonce validator implementation.
+ * Request validator implementation.
  *
- * @package Inpsyde\Nonces
+ * @package Inpsyde\Nonces\Validator
  * @since   1.0.0
  */
-class RequestNonceValidator {
+class RequestValidator {
 
 	/**
 	 * @var string
@@ -45,21 +47,34 @@ class RequestNonceValidator {
 	 *
 	 * @return bool Whether or not the nonce in the current request is valid.
 	 */
-	public function validate_nonce( $action = '', NonceValidator $nonce_validator = null ) {
-
-		$action = $action ? (string) $action : $this->action;
-
-		$nonce = array_key_exists( $action, $_GET ) ? $_GET[ $action ] : '';
-
-		if (
-			array_key_exists( 'REQUEST_METHOD', $_SERVER ) && 'POST' === $_SERVER['REQUEST_METHOD']
-			&& array_key_exists( $action, $_POST )
-		) {
-			$nonce = $_POST[ $action ];
-		}
+	public function validate( $action = '', NonceValidator $nonce_validator = null ) {
 
 		$nonce_validator = $nonce_validator ?: $this->nonce_validator;
 
-		return $nonce_validator->validate_nonce( $nonce, $action );
+		$action = $action ? (string) $action : $this->action;
+
+		return $nonce_validator->validate( $this->get_nonce( $action ), $action );
+	}
+
+	/**
+	 * Returns the nonce given in the current request, if found.
+	 *
+	 * @param string $action Nonce action.
+	 *
+	 * @return string Nonce value.
+	 */
+	private function get_nonce( $action ) {
+
+		$nonce = array_key_exists( $action, $_GET ) ? (string) $_GET[ $action ] : '';
+
+		if ( empty( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+			return $nonce;
+		}
+
+		if ( ! array_key_exists( $action, $_POST ) ) {
+			return $nonce;
+		}
+
+		return (string) $_POST[ $action ];
 	}
 }
