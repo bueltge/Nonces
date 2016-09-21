@@ -31,7 +31,7 @@ final class WPNonce implements Nonce {
 
 		$this->action = (string) $action;
 
-		$this->nonce = (string) wp_create_nonce( $this->action );
+		$this->nonce = (string) wp_create_nonce( $action );
 	}
 
 	/**

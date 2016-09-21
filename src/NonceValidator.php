@@ -8,7 +8,7 @@ namespace Inpsyde\Nonces;
  * @package Inpsyde\Nonces
  * @since   1.0.0
  */
-interface Validator {
+interface NonceValidator {
 
 	/**
 	 * Validates the given nonce in the given context.
@@ -18,7 +18,7 @@ interface Validator {
 	 * @param string $nonce   Nonce value.
 	 * @param mixed  $context Optional. Validation context. Defaults to null.
 	 *
-	 * @return bool Whether or not the nonce is valid.
+	 * @return bool Whether or not the nonce is valid in the given context.
 	 */
-	public function validate( $nonce, $context = null );
+	public function validate_nonce( $nonce, $context = null );
 }
