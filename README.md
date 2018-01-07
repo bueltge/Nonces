@@ -1,5 +1,8 @@
 # Nonces
 
+## UNMAINTAINED
+_NOTE:_ This repository is no longer maintained. We use always [brain/nonces](https://github.com/Brain-WP/Nonces)
+
 ## Description
 Created for the first Inpsyde Team Challenge 25th-26th February 2016. Team 1 members are Christian Brückner, Thorsten Frommen, Tina Billinger and Jessica Lyschik.
 
